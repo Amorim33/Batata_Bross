@@ -20,7 +20,7 @@ var game = new Phaser.Game(config);
 
 var cursors;
 var score = 0;
-var scorePoints,tutorialText;
+var scorePoints,tutorialText,scoreText,overText;
 var player,platforms,star;
 
 function preload ()
@@ -36,6 +36,11 @@ function create ()
 {
 	this.add.image(400, 300, 'background');
 	 
+    scorePoints = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: 'rgb(0,0,0)' });
+    
+    tutorialText = this.add.text(280, 16, 'Coma batatas e fique saudável! \n Não se renda aos lanches, \nisso comprometerá sua dieta!', 
+    { fontSize: '25px', fill: 'rgb(0,0,0)' });
+    
 	platforms = this.physics.add.staticGroup();
 
 	platforms.create(400, 568, 'floor').setScale(2).refreshBody();
@@ -59,9 +64,6 @@ function create ()
         child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
     });
     
-    scorePoints = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: 'rgb(0,0,0)' });
-    
-    tutorialText = this.add.text(280, 16, 'Coma batatas e fique saudável!', { fontSize: '25px', fill: 'rgb(0,0,0)' });
     
     this.physics.add.overlap(player, star, collectBatatas, null, this);
     
@@ -119,10 +121,20 @@ function update(){
 	if(cursors.up.isDown && player.body.touching.down){
 		player.setVelocityY(-340);
 	}
+    else if(cursors.down.isDown){
+        player.setVelocityY(340);    
+    }
+    
+    
+   
+  
    
 }
-
+var ptsB=0,ptsE=0;
 function collectBatatas(player, star){
+    ptsB++;
+    cursors = this.input.keyboard.createCursorKeys();
+    
     star.disableBody(true, true);
     
     score += 10;
@@ -136,22 +148,49 @@ function collectBatatas(player, star){
     enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
     enemy.allowGravity = false;
     
-    if(score >= 120){
-        scorePoints = this.add.text(16, 280, 'Parabéns mulekote! \n Agora você está saudável!', { fontSize: '50px', fill: 'rgb(0,0,150)' });
-        this.physics.pause();
-       
+    if(ptsB==12){
+        scoreText = this.add.text(16, 280, 'Parabéns mulekote! \n Agora você está saudável!', { fontSize: '50px', fill: 'rgb(0,0,150)' });
         player.setTint(0x0088ff);
-    
-        player.anims.play('turn');
     }
+    else  scoreText.setText(' ');
+    
+    if(Win())this.physics.pause();
 }
 function hitEnemy (player, enemy){
-    this.physics.pause();
+    
+    if(player.body.touching.down){
+        enemy.disableBody(true,true);
+        score += 10;
+        ptsE++;
+        scorePoints.setText('Score: ' + score);
+        if(ptsE==12){
+            scoreText = this.add.text(16, 280, 'Caraca muleke, parabéns! \n Você é realmente fitness!', { fontSize: '50px', fill: 'rgb(0,150,0)'});
+            //this.physics.pause();
 
-    player.setTint(0xff0000);
+            player.setTint(0x008800);
+
+            //player.anims.play('turn');
+        }
+        else  scoreText.setText(' ');
+    }
+    else{
+        this.physics.pause();
+
+        player.setTint(0xff0000);
+
+        player.anims.play('turn');
+        
+        overText = this.add.text(250, 280, 'Game Over', { fontSize: '50px', fill: 'rgb(250,0,0)' }); 
+        scoreText.setText(' ');
+         
+        
+    }
     
-    player.anims.play('turn');
-    
-    scorePoints = this.add.text(250, 280, 'Game Over', { fontSize: '50px', fill: 'rgb(250,0,0)' });   
-  
+    if(Win())this.physics.pause();
+}
+function Win(){
+    if(ptsE >= 12 && ptsB >= 12){
+        return true;
+    }
+    return false;
 }
