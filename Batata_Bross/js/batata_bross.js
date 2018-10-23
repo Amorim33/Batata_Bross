@@ -1,3 +1,5 @@
+var outScore = document.querySelector("p");
+
 var config = {
     type: Phaser.AUTO,
     width: 800,
@@ -174,6 +176,8 @@ function hitEnemy (player, enemy){
         else  scoreText.setText(' ');
     }
     else{
+        outScore.textContent = "score: "+score;
+        
         this.physics.pause();
 
         player.setTint(0xff0000);
@@ -182,6 +186,7 @@ function hitEnemy (player, enemy){
         
         overText = this.add.text(250, 280, 'Game Over', { fontSize: '50px', fill: 'rgb(250,0,0)' }); 
         scoreText.setText(' ');
+        
          
         
     }

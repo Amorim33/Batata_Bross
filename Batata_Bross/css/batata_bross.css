@@ -1,0 +1,9 @@
+p{
+    font-size: 3em;
+    font-family: "Arial Black";
+    color:red;
+    text-shadow: 3px 3px 2px black;
+    position: absolute;
+    right:15%;
+    top:40%;
+}
