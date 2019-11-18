@@ -1,6 +1,7 @@
 # Batata_Bross
-Jogo de plataforma simples desenvolvido em javascript, utilizando a framework, phaser.io.
- * Instalação:
-Baixe o repositório e abra o arquivo .html no Firefox.
+A simple platform game developed in Javascript using the framework Phaser.io.
+ * How to install:
+Download the repository and run the .html file on Firefox.
  * Tutorial:
-Coma batatas e fuja dos lanches calóricos, para que se torne mais saudável, pise-nos e eles nunca mais te atrapalharão!
+To be healthier, eat the potatoes and avoid the junk food. If you smash the snacks with your feet, they will disappear of your way.
+
